@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  nginx:
+    image: nginx:1.21.6
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    volumes:
+      - type: bind
+        source: ./nginx/templates
+        target: /etc/nginx/templates
+
+  echo:
+    build: echo
+    environment:
+      - PORT=9091
+    ports:
+      - "9091:9091"

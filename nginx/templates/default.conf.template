@@ -1,0 +1,21 @@
+upstream echo_server {
+    server echo:9091;
+}
+
+server {
+    listen       80;
+    server_name  ${NGINX_PORT};
+
+    location / {
+        proxy_set_header Host             $host;
+        proxy_set_header X-Real-IP        $remote_addr;
+        proxy_pass                        http://echo_server;
+    }
+
+    location /specific {
+        proxy_set_header Host             $host;
+        proxy_set_header X-Real-IP        $remote_addr;
+        proxy_set_header User-Agent       'curl/7.79.1';
+        proxy_pass                        http://echo_server;
+    }
+}
